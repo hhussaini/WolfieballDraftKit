@@ -26,6 +26,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -39,6 +40,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import properties_manager.PropertiesManager;
 
 
@@ -247,6 +250,7 @@ public class WBK_GUI implements DraftDataView {
     RadioButton p;
     RadioButton c;
     HBox radioButtons;
+    ToggleGroup buttons;
     
   
     TableView<Player> playerTable;
@@ -630,19 +634,46 @@ public class WBK_GUI implements DraftDataView {
         radioButtons = new HBox();
         
         all = new RadioButton("All");
+        all.setId("ALL");
         oneB = new RadioButton("1B");
+        oneB.setId("1B");
         cOne = new RadioButton("C1");
+        cOne.setId("C1");
         threeB = new RadioButton("3B");
+        threeB.setId("3B");
         twoB = new RadioButton("2B");
+        twoB.setId("2B");
         mi = new RadioButton("MI");
+        mi.setId("MI");
         ss = new RadioButton("SS");
+        ss.setId("SS");
         of = new RadioButton("OF");
+        of.setId("OF");
         u = new RadioButton("U");
+        u.setId("U");
         p = new RadioButton("P");
+        p.setId("P");
         c = new RadioButton("C");
+        c.setId("C");
+        buttons = new ToggleGroup();
         
+        all.setToggleGroup(buttons);
+        oneB.setToggleGroup(buttons);
+        cOne.setToggleGroup(buttons);
+        threeB.setToggleGroup(buttons);
+        twoB.setToggleGroup(buttons);
+        mi.setToggleGroup(buttons);
+        ss.setToggleGroup(buttons);
+        of.setToggleGroup(buttons);
+        u.setToggleGroup(buttons);
+        p.setToggleGroup(buttons);
+        c.setToggleGroup(buttons);
+        
+         
         
         radioButtons.getChildren().addAll(all, oneB, cOne, threeB, twoB, mi, ss, of, u, p, c);
+        
+        
         
         playerTable = new TableView();
         
@@ -943,6 +974,102 @@ public class WBK_GUI implements DraftDataView {
         primaryStage.show();
     }
 
+    public void changeTable(RadioButton b) {
+        
+          Draft draft = this.getDataManager().getDraft();
+          ObservableList<Player> p = draft.getPlayers();
+          ObservableList<Player> newP = FXCollections.observableArrayList();
+          String button = b.getId();
+          
+          for (int i = 0; i < p.size(); i++)
+          {
+              if (button == "U")
+              {
+                  if (p.get(i).getPosition() != "P")
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "P")
+              {
+                  if (p.get(i).getPosition() == "P")
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "1B")
+              {
+                  if (p.get(i).getPosition().contains("1B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "C1")
+              {
+                  if (p.get(i).getPosition().contains("C"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "3B")
+              {
+                  if (p.get(i).getPosition().contains("3B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "2B")
+              {
+                  if (p.get(i).getPosition().contains("2B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "MI")
+              {
+                  if (p.get(i).getPosition().contains("MI"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "SS")
+              {
+                  if (p.get(i).getPosition().contains("SS"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "OF")
+              {
+                  if (p.get(i).getPosition().contains("OF"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              
+              else if (button == "ALL")
+              {
+                  
+                newP.add(p.get(i));
+                  
+              }
+                    
+          }
+            
+          playerTable.getItems().clear();
+          playerTable.setItems(newP);
+            
+        
+    }
     // INIT ALL THE EVENT HANDLERS
     
     private void initEventHandlers() throws IOException {
@@ -965,6 +1092,52 @@ public class WBK_GUI implements DraftDataView {
         exitButton.setOnAction(e -> {
             fileController.handleExitRequest(this);
         });
+        
+        all.setOnAction(e -> {
+            fileController.changeTable(this, all, playerTable);
+        });
+        
+        u.setOnAction(e -> {
+            fileController.changeTable(this, u, playerTable);
+        });
+        
+        p.setOnAction(e -> {
+            fileController.changeTable(this, p, playerTable);
+        });
+        
+        oneB.setOnAction(e -> {
+            changeTable(oneB);
+        });
+        
+        cOne.setOnAction(e -> {
+            changeTable(cOne);
+        });
+        
+        twoB.setOnAction(e -> {
+            changeTable(twoB);
+        });
+        
+        threeB.setOnAction(e -> {
+            changeTable(threeB);
+        });
+        
+        mi.setOnAction(e -> {
+            changeTable(mi);
+        });
+        
+        ss.setOnAction(e -> {
+            changeTable(ss);
+        });
+        
+        of.setOnAction(e -> {
+            changeTable(of);
+        });
+        
+        c.setOnAction(e -> {
+            changeTable(c);
+        });
+        
+        
         
         /*
         // THEN THE COURSE EDITING CONTROLS
