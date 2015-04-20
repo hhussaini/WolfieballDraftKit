@@ -1149,7 +1149,7 @@ public class WBK_GUI implements DraftDataView {
         
     }
     
-    //method for using the search bar, sorts the plaertable 
+    //method for using the search bar, sorts the playertable 
     public void handleSortList() {
          
         Draft draft = this.getDataManager().getDraft();
@@ -1159,8 +1159,7 @@ public class WBK_GUI implements DraftDataView {
         
         for (int i = 0; i < p.size(); i++)
         {
-            if (p.get(i).getFirstName().startsWith(x.toLowerCase()) || p.get(i).getLastName().startsWith(x.toLowerCase()) 
-                    || p.get(i).getFirstName().startsWith(x.toUpperCase()) || p.get(i).getLastName().startsWith(x.toUpperCase()))
+            if (p.get(i).getFirstName().toLowerCase().startsWith(x.toLowerCase()) || p.get(i).getLastName().toLowerCase().startsWith(x.toLowerCase()))
             {
                 
                 newP.add(p.get(i));
