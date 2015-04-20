@@ -268,8 +268,15 @@ public class WBK_GUI implements DraftDataView {
     TableColumn notes;
     
     
+    VBox fantasyTeamBox;
+    VBox standingsBox;
+    VBox summaryBox;
+    VBox mlbTeamBox;
     
-    
+    Label fantasyTeamLabel;
+    Label standingsLabel;
+    Label summaryLabel;
+    Label mlbTeamLabel;
     
     
        
@@ -591,7 +598,7 @@ public class WBK_GUI implements DraftDataView {
         // ADD THE COMPONENTS WE'VE JUST INITIALIZED
         workspacePane = new BorderPane();
        //workspacePane.setTop(topWorkspacePane);
-        workspacePane.setCenter(playerBox);
+        workspacePane.setCenter(fantasyTeamBox);
         workspacePane.getStyleClass().add(CLASS_BORDERED_PANE);
         
         // AND NOW PUT IT IN THE WORKSPACE
@@ -619,6 +626,33 @@ public class WBK_GUI implements DraftDataView {
         
         playerTop = new HBox();
         playerScreenLabel = initLabel(WBK_PropertyType.PLAYER_SCREEN, CLASS_HEADING_LABEL);
+        
+    
+        
+        fantasyTeamBox = new VBox();
+        fantasyTeamBox.getStyleClass().add(CLASS_BORDERED_PANE);
+        fantasyTeamLabel = initLabel(WBK_PropertyType.FANTASY_TEAM_SCREEN, CLASS_HEADING_LABEL);
+        fantasyTeamBox.getChildren().add(fantasyTeamLabel);
+        
+        standingsBox = new VBox();
+        standingsBox.getStyleClass().add(CLASS_BORDERED_PANE);
+        standingsLabel = initLabel(WBK_PropertyType.STANDINGS_SCREEN, CLASS_HEADING_LABEL);
+        standingsBox.getChildren().add(standingsLabel);
+        
+        summaryBox = new VBox();
+        summaryBox.getStyleClass().add(CLASS_BORDERED_PANE);
+        summaryLabel = initLabel(WBK_PropertyType.SUMMARY_SCREEN, CLASS_HEADING_LABEL);
+        summaryBox.getChildren().add(summaryLabel);
+        
+        mlbTeamBox = new VBox();
+        mlbTeamBox.getStyleClass().add(CLASS_BORDERED_PANE);
+        mlbTeamLabel = initLabel(WBK_PropertyType.MLB_TEAM_SCREEN, CLASS_HEADING_LABEL);
+        mlbTeamBox.getChildren().add(mlbTeamLabel);
+        
+        
+        
+        
+        
         
         addLectureButton = initChildButton(playerTop, WBK_PropertyType.ADD_ICON, WBK_PropertyType.ADD_ITEM_TOOLTIP, false);
         removeLectureButton = initChildButton(playerTop, WBK_PropertyType.MINUS_ICON, WBK_PropertyType.REMOVE_ITEM_TOOLTIP, false);
@@ -1045,6 +1079,26 @@ public class WBK_GUI implements DraftDataView {
             fileController.changeTable(this, c, playerTable);
         });
         
+        homeButton.setOnAction(e -> {
+            workspacePane.setCenter(fantasyTeamBox);
+        });
+        
+        playerButton.setOnAction(e -> {
+            workspacePane.setCenter(playerBox);
+        });
+        
+        summaryButton.setOnAction(e -> {
+            workspacePane.setCenter(summaryBox);
+        });
+        
+        standingButton.setOnAction(e -> {
+            workspacePane.setCenter(standingsBox);
+        });
+        
+        teamButton.setOnAction(e -> {
+            workspacePane.setCenter(mlbTeamBox);
+        });
+        
         
         registerTextFieldController(searchTextField);
         /*
@@ -1155,11 +1209,11 @@ public class WBK_GUI implements DraftDataView {
         Draft draft = this.getDataManager().getDraft();
         ObservableList<Player> p = draft.getPlayers();
         ObservableList<Player> newP = FXCollections.observableArrayList();
-        String x = searchTextField.getText();
+        String text = searchTextField.getText();
         
         for (int i = 0; i < p.size(); i++)
         {
-            if (p.get(i).getFirstName().toLowerCase().startsWith(x.toLowerCase()) || p.get(i).getLastName().toLowerCase().startsWith(x.toLowerCase()))
+            if (p.get(i).getFirstName().toLowerCase().startsWith(text.toLowerCase()) || p.get(i).getLastName().toLowerCase().startsWith(text.toLowerCase()))
             {
                 
                 newP.add(p.get(i));
