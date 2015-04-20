@@ -8,15 +8,21 @@ package wbk.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import static javafx.print.Paper.C;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 import wbk.data.Draft;
 import wbk.data.DraftDataManager;
+import wbk.data.Player;
 import wbk.error.ErrorHandler;
 import wbk.file.DraftSiteExporter;
 import wbk.gui.MessageDialog;
+import wbk.gui.NotesDialog;
 import wbk.gui.YesNoCancelDialog;
 import wbk.gui.WBK_GUI;
 import static wolfieballdraftkit.WBK_PropertyType.COURSE_SAVED_MESSAGE;
@@ -52,6 +58,8 @@ public class FileController {
     
     // WE'LL USE THIS TO GET OUR VERIFICATION FEEDBACK
     PropertiesManager properties;
+    
+    NotesDialog notes;
 
     /**
      * This default constructor starts the program without a course file being
@@ -82,6 +90,7 @@ public class FileController {
         messageDialog = initMessageDialog;
         yesNoCancelDialog = initYesNoCancelDialog;
         properties = PropertiesManager.getPropertiesManager();
+        
     }
     
     /**
@@ -187,7 +196,126 @@ public class FileController {
             errorHandler.handleSaveCourseError();
         }
     }
+    
+   
+    
+    //method for sorting the playerlist correctly according to which radio button is pressed
+    public void changeTable(WBK_GUI gui, RadioButton b, TableView playerTable) {
+        
+          Draft draft = gui.getDataManager().getDraft();
+          ObservableList<Player> p = draft.getPlayers();
+          ObservableList<Player> newP = FXCollections.observableArrayList();
+          String button = b.getId();
+          newP.clear();
+          
+          
+          for (int i = 0; i < p.size(); i++)
+          {
+              
+              if (b.getId().equals("nothing"))
+              {
+                  newP = playerTable.getItems();
+                  break;
+              }
+             
+              else if (button.equals("U"))
+              {
+                  if (!p.get(i).getPosition().equals("P"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button.equals("P"))
+              {
+                  if (p.get(i).getPosition().equals("P"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "1B")
+              {
+                  if (p.get(i).getPosition().contains("1B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "C1")
+              {
+                  if (p.get(i).getPosition().contains("1B") || p.get(i).getPosition().contains("3B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "3B")
+              {
+                  if (p.get(i).getPosition().contains("3B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "2B")
+              {
+                  if (p.get(i).getPosition().contains("2B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "MI")
+              {
+                  if (p.get(i).getPosition().contains("SS") || p.get(i).getPosition().contains("2B"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "SS")
+              {
+                  if (p.get(i).getPosition().contains("SS"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "OF")
+              {
+                  if (p.get(i).getPosition().contains("OF"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "C")
+              {
+                  if (p.get(i).getPosition().contains("C"))
+                  {
+                      newP.add(p.get(i));
+                  }
+              }
+              
+              else if (button == "ALL")
+              {
+                  
+                newP.add(p.get(i));
+                  
+              }
+                    
+          }
+            
 
+          
+          
+          
+          playerTable.setItems(newP);
+            
+        
+    }
+    
     /**
      * This method will export the current course.
      * 
