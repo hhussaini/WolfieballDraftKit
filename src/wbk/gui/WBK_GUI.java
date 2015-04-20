@@ -1149,15 +1149,18 @@ public class WBK_GUI implements DraftDataView {
         
     }
     
-     public void handleSortList() {
+    //method for using the search bar, sorts the plaertable 
+    public void handleSortList() {
          
         Draft draft = this.getDataManager().getDraft();
         ObservableList<Player> p = draft.getPlayers();
         ObservableList<Player> newP = FXCollections.observableArrayList();
+        String x = searchTextField.getText();
         
         for (int i = 0; i < p.size(); i++)
         {
-            if (p.get(i).getFirstName().startsWith(searchTextField.getText()) || p.get(i).getLastName().startsWith(searchTextField.getText()))
+            if (p.get(i).getFirstName().startsWith(x.toLowerCase()) || p.get(i).getLastName().startsWith(x.toLowerCase()) 
+                    || p.get(i).getFirstName().startsWith(x.toUpperCase()) || p.get(i).getLastName().startsWith(x.toUpperCase()))
             {
                 
                 newP.add(p.get(i));
