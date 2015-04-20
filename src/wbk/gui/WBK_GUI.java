@@ -51,6 +51,7 @@ import wbk.data.DraftDataView;
 
 import wbk.data.DraftDataManager;
 import wbk.controller.FileController;
+import wbk.controller.PlayerEditController;
 import wbk.data.Draft;
 import wbk.data.Player;
 
@@ -94,7 +95,7 @@ public class WBK_GUI implements DraftDataView {
     //DraftEditController draftController;
     
     // THIS HANDLES REQUESTS TO ADD OR EDIT SCHEDULE STUFF
-    //ScheduleEditController scheduleController;
+    PlayerEditController playerController;
     
     
     
@@ -1171,18 +1172,18 @@ public class WBK_GUI implements DraftDataView {
         
         */
         
-        
-        
+        //Helps in creating dialog for user to change notes of player
+        playerController = new PlayerEditController(primaryStage, dataManager.getDraft(), messageDialog, yesNoCancelDialog);
         // AND NOW THE SCHEDULE ITEMS TABLE
-       /* scheduleItemsTable.setOnMouseClicked(e -> {
+        playerTable.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 // OPEN UP THE SCHEDULE ITEM EDITOR
-                ScheduleItem si = scheduleItemsTable.getSelectionModel().getSelectedItem();
-                scheduleController.handleEditScheduleItemRequest(this, si);
+                Player p = playerTable.getSelectionModel().getSelectedItem();
+                playerController.handleEditPlayerRequest(this, p);
             }
         });
         
-        
+        /*
         lectureTable.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 // OPEN UP THE SCHEDULE ITEM EDITOR
