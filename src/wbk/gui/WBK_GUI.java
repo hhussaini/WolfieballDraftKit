@@ -702,6 +702,7 @@ public class WBK_GUI implements DraftDataView {
         bawhip.setCellValueFactory(new PropertyValueFactory<Double, String>("bawhip"));
         estimatedValue.setCellValueFactory(new PropertyValueFactory<Double, String>("estimatedValue"));
         notes.setCellValueFactory(new PropertyValueFactory<String, String>("notes"));
+        hrsv.setCellValueFactory(new PropertyValueFactory<Integer, String>("hrsv"));
         
         
         
@@ -974,103 +975,9 @@ public class WBK_GUI implements DraftDataView {
         primaryStage.show();
     }
 
-    public void changeTable(RadioButton b) {
-        
-          Draft draft = this.getDataManager().getDraft();
-          ObservableList<Player> p = draft.getPlayers();
-          ObservableList<Player> newP = FXCollections.observableArrayList();
-          String button = b.getId();
-          
-          for (int i = 0; i < p.size(); i++)
-          {
-              if (button == "U")
-              {
-                  if (p.get(i).getPosition() != "P")
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "P")
-              {
-                  if (p.get(i).getPosition() == "P")
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "1B")
-              {
-                  if (p.get(i).getPosition().contains("1B"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "C1")
-              {
-                  if (p.get(i).getPosition().contains("C"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "3B")
-              {
-                  if (p.get(i).getPosition().contains("3B"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "2B")
-              {
-                  if (p.get(i).getPosition().contains("2B"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "MI")
-              {
-                  if (p.get(i).getPosition().contains("MI"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "SS")
-              {
-                  if (p.get(i).getPosition().contains("SS"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              else if (button == "OF")
-              {
-                  if (p.get(i).getPosition().contains("OF"))
-                  {
-                      newP.add(p.get(i));
-                  }
-              }
-              
-              
-              else if (button == "ALL")
-              {
-                  
-                newP.add(p.get(i));
-                  
-              }
-                    
-          }
-            
-          playerTable.getItems().clear();
-          playerTable.setItems(newP);
-            
-        
-    }
+    
     // INIT ALL THE EVENT HANDLERS
+    
     
     private void initEventHandlers() throws IOException {
         // FIRST THE FILE CONTROLS
@@ -1093,6 +1000,7 @@ public class WBK_GUI implements DraftDataView {
             fileController.handleExitRequest(this);
         });
         
+        //Created event handlers for every radio button
         all.setOnAction(e -> {
             fileController.changeTable(this, all, playerTable);
         });
@@ -1106,39 +1014,39 @@ public class WBK_GUI implements DraftDataView {
         });
         
         oneB.setOnAction(e -> {
-            changeTable(oneB);
+            fileController.changeTable(this, oneB, playerTable);
         });
         
         cOne.setOnAction(e -> {
-            changeTable(cOne);
+            fileController.changeTable(this, cOne, playerTable);
         });
         
         twoB.setOnAction(e -> {
-            changeTable(twoB);
+            fileController.changeTable(this, twoB, playerTable);
         });
         
         threeB.setOnAction(e -> {
-            changeTable(threeB);
+            fileController.changeTable(this, threeB, playerTable);
         });
         
         mi.setOnAction(e -> {
-            changeTable(mi);
+            fileController.changeTable(this, mi, playerTable);
         });
         
         ss.setOnAction(e -> {
-            changeTable(ss);
+            fileController.changeTable(this, ss, playerTable);
         });
         
         of.setOnAction(e -> {
-            changeTable(of);
+            fileController.changeTable(this, of, playerTable);
         });
         
         c.setOnAction(e -> {
-            changeTable(c);
+            fileController.changeTable(this, c, playerTable);
         });
         
         
-        
+        registerTextFieldController(searchTextField);
         /*
         // THEN THE COURSE EDITING CONTROLS
         courseController = new CourseEditController();
@@ -1240,15 +1148,37 @@ public class WBK_GUI implements DraftDataView {
         */
         
     }
+    
+     public void handleSortList() {
+         
+        Draft draft = this.getDataManager().getDraft();
+        ObservableList<Player> p = draft.getPlayers();
+        ObservableList<Player> newP = FXCollections.observableArrayList();
+        
+        for (int i = 0; i < p.size(); i++)
+        {
+            if (p.get(i).getFirstName().startsWith(searchTextField.getText()) || p.get(i).getLastName().startsWith(searchTextField.getText()))
+            {
+                
+                newP.add(p.get(i));
+                
+                
+            }
+        }
+        
+        
+        playerTable.setItems(newP);
+         
+     }
 
     // REGISTER THE EVENT LISTENER FOR A TEXT FIELD
-   /*
+   
     private void registerTextFieldController(TextField textField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            draftController.handleDraftChangeRequest(this);
+            handleSortList();
         });
     }
-    */
+    
     // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
     private Button initChildButton(Pane toolbar, WBK_PropertyType icon, WBK_PropertyType tooltip, boolean disabled) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
